@@ -219,14 +219,14 @@ class ChatGPTClass extends CoreClass {
         }
 
         async function askQuestion(body, from) {
-            const response = await fetch('http://127.0.0.1:5000/api/question', {
+            const response = await fetch('https://apigpt3.onrender.com/api/question', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
                 question: body,
-                phone_client: '56998803805',
+                phone_client: '56954641957',
                 phone_customer: from,
               }),
             });
