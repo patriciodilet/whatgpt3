@@ -1,0 +1,4 @@
+node_modules
+bot_sessions
+.env
+!node_modules/@bot-whatsapp/portal
