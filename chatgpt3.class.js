@@ -260,8 +260,8 @@ class ChatGPTClass extends CoreClass {
                     // await this.databaseClass.saveCollection('test', from)
 
                     const aiResponse = await askQuestion(body, from);
-                    console.log("aiResponse")
-                    console.log(aiResponse)
+                    // console.log("aiResponse")
+                    // console.log(aiResponse)
                     const parseMessage = {answer: aiResponse };
                     this.sendFlowSimple([parseMessage], from);
 
@@ -314,15 +314,16 @@ class ChatGPTClass extends CoreClass {
 
                 const aiResponse = await askQuestion(body, from);            
                 const parseMessage = {answer: aiResponse };
-                // this.sendFlowSimple([parseMessage], from);
-                console.log("aiResponse")
-                console.log(aiResponse)
-                const parseMessage2 = {answer: aiResponse ,
-                    options: { media: aiResponse }
-                    // options: { media: 'https://file-examples.com/storage/fe0b804ac5640668798b8d0/2017/11/file_example_MP3_700KB.mp3' }
-                    // options: { media: 'http://localhost:3000/audio.mp3' }
-                };
-                this.sendProviderAndSave(from, parseMessage2)
+                this.sendFlowSimple([parseMessage], from);
+
+                // console.log("aiResponse")
+                // console.log(aiResponse)
+                // const parseMessage2 = {answer: aiResponse ,
+                //     options: { media: aiResponse }
+                //     // options: { media: 'https://file-examples.com/storage/fe0b804ac5640668798b8d0/2017/11/file_example_MP3_700KB.mp3' }
+                //     // options: { media: 'http://localhost:3000/audio.mp3' }
+                // };
+                // this.sendProviderAndSave(from, parseMessage2)
 
             } catch (error) {
                 const parseMessage = {answer: 'Please, ask again in a moment: ' + error };
