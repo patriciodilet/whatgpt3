@@ -114,7 +114,7 @@ class ChatGPTClass extends CoreClass {
                 const delayMs = ctxMessage?.options?.delay || 0
                 if (delayMs) await delay(delayMs)
                 // await QueuePrincipal.enqueue(() =>
-                console.log(numberOrId)
+                // console.log(numberOrId)
                 this.sendProviderAndSave(numberOrId, ctxMessage).then(() => resolveCbEveryCtx(ctxMessage))
                 // )
             }
@@ -313,17 +313,24 @@ class ChatGPTClass extends CoreClass {
                 console.log("voy x askQuestion")
 
                 const aiResponse = await askQuestion(body, from);            
-                const parseMessage = {answer: aiResponse };
-                this.sendFlowSimple([parseMessage], from);
+                // const parseMessage = {answer: aiResponse };
+                // this.sendFlowSimple([parseMessage], from);
 
                 // console.log("aiResponse")
                 // console.log(aiResponse)
-                // const parseMessage2 = {answer: aiResponse ,
-                //     options: { media: aiResponse }
-                //     // options: { media: 'https://file-examples.com/storage/fe0b804ac5640668798b8d0/2017/11/file_example_MP3_700KB.mp3' }
-                //     // options: { media: 'http://localhost:3000/audio.mp3' }
-                // };
-                // this.sendProviderAndSave(from, parseMessage2)
+
+                if (aiResponse.endsWith(".mp3")) {
+                    const parseMessage2 = {answer: aiResponse ,
+                        options: { media: "https://apigpt3.onrender.com/api/voice?audiofile=" + aiResponse  }
+                    };
+                    this.sendProviderAndSave(from, parseMessage2)
+                  } else {
+                    const parseMessage = {answer: aiResponse };
+                    this.sendFlowSimple([parseMessage], from);
+                  }
+
+                
+
 
             } catch (error) {
                 const parseMessage = {answer: 'Please, ask again in a moment: ' + error };
