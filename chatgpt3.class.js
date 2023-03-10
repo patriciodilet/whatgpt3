@@ -76,7 +76,7 @@ class ChatGPTClass extends CoreClass {
             const media = payload?.media ?? null
             const buttons = payload?.buttons ?? []
             const capture = payload?.capture ?? false
-            // console.log("3");
+            console.log("3");
             return toCtx({
                 body,
                 from,
@@ -90,7 +90,7 @@ class ChatGPTClass extends CoreClass {
         const endFlow =
         (flag) =>
         async (message = null) => {
-            // console.log("4");
+            console.log("4");
 
             flag.endFlow = true
             endFlowFlag = true
@@ -102,17 +102,20 @@ class ChatGPTClass extends CoreClass {
         // 📄 Esta funcion se encarga de enviar un array de mensajes dentro de este ctx
         const sendFlow = async (messageToSend, numberOrId, options = { prev: prevMsg }) => {
             if (options.prev?.options?.capture) await cbEveryCtx(options.prev?.ref)
-            // console.log("5");
+            console.log("5");
             const queue = []
             for (const ctxMessage of messageToSend) {
                 if (endFlowFlag) { 
-                    // console.log("5.1");
+                    console.log("5.1");
                     return 
                 }
+                console.log("5.2");
+
                 const delayMs = ctxMessage?.options?.delay || 0
                 if (delayMs) await delay(delayMs)
                 // await QueuePrincipal.enqueue(() =>
-                    this.sendProviderAndSave(numberOrId, ctxMessage).then(() => resolveCbEveryCtx(ctxMessage))
+                console.log(numberOrId)
+                this.sendProviderAndSave(numberOrId, ctxMessage).then(() => resolveCbEveryCtx(ctxMessage))
                 // )
             }
             return Promise.all(queue)
@@ -126,20 +129,20 @@ class ChatGPTClass extends CoreClass {
             // console.log("6");
 
             if (!isContinueFlow) {
-                // console.log("7");
+                console.log("7");
 
                 const refToContinueChild = this.flowClass.getRefToContinueChild(currentPrev?.keyword)
                 const flowStandaloneChild = this.flowClass.getFlowsChild()
                 const nextChildMessages =
                     (await this.flowClass.find(refToContinueChild?.ref, true, flowStandaloneChild)) || []
                 if (nextChildMessages?.length) {
-                        // console.log("8");
+                        console.log("8");
                         return await sendFlow(nextChildMessages, from, { prev: undefined })
                     }
             }
 
             if (!isContinueFlow) {
-                // console.log("9");
+                console.log("9");
                 await sendFlow(filterNextFlow, from, { prev: undefined })
                 return
             }
@@ -257,6 +260,8 @@ class ChatGPTClass extends CoreClass {
                     // await this.databaseClass.saveCollection('test', from)
 
                     const aiResponse = await askQuestion(body, from);
+                    console.log("aiResponse")
+                    console.log(aiResponse)
                     const parseMessage = {answer: aiResponse };
                     this.sendFlowSimple([parseMessage], from);
 
@@ -275,6 +280,7 @@ class ChatGPTClass extends CoreClass {
             const typeCapture = typeof prevMsg?.options?.capture
 
             if (typeCapture === 'boolean' && fallBackFlag) {
+                console.log("sendFlow 29")
                 msgToSend = this.flowClass.find(refToContinue?.ref, true) || []
                 await sendFlow(msgToSend, from)
                 return
@@ -299,10 +305,24 @@ class ChatGPTClass extends CoreClass {
 
                 // await adapter.saveToCollection('myCollection', toCtx2);
 
+                // const urlRegex = /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/;
+                // if (urlRegex.test(body)) {
+                //     console.log("dentro de url regex")
+                //     msgToSend = this.flowClass.find(this.generalArgs.listEvents.VOICE_NOTE) || [];
+                // }
+                console.log("voy x askQuestion")
 
                 const aiResponse = await askQuestion(body, from);            
                 const parseMessage = {answer: aiResponse };
-                this.sendFlowSimple([parseMessage], from);
+                // this.sendFlowSimple([parseMessage], from);
+                console.log("aiResponse")
+                console.log(aiResponse)
+                const parseMessage2 = {answer: aiResponse ,
+                    options: { media: aiResponse }
+                    // options: { media: 'https://file-examples.com/storage/fe0b804ac5640668798b8d0/2017/11/file_example_MP3_700KB.mp3' }
+                    // options: { media: 'http://localhost:3000/audio.mp3' }
+                };
+                this.sendProviderAndSave(from, parseMessage2)
 
             } catch (error) {
                 const parseMessage = {answer: 'Please, ask again in a moment: ' + error };

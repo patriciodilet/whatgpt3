@@ -57,9 +57,7 @@ const createBotGPT = async ({ flow, provider, database }) => {
 const flowPrecios = addKeyword(['Price', 'credit'])
     .addAnswer(
         [
-            '👉 *$19.000 clp* https://mpago.la/1fQrScW',
-            '👉 *$120 usd* 6 month https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-5GM09587UV317715DMP575TY',
-            '👉 *1 year* $210 usd https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-4K92802885911200UMP576TY',
+            '👉 500.000 créditos por *$10.000 clp* https://www.flow.cl/btn.php?token=kntjgzk',
         ],
         { media: 'https://chatxbot.live/wp-content/uploads/2021/11/Image-7501.png', },
         null,
@@ -77,12 +75,49 @@ const flowGracias = addKeyword(['Thanks'])
         [null]
     )
 
+// const flowOnline = addKeyword('paypal')
+//     .addAnswer('Voy generar un link de paypal *escribe algo*', { capture: true }, async (_, { flowDynamic }) => {
+//         //   await fakeHTTP()
+//         // payment()
+//         await flowDynamic('Esperate.... estoy generando esto toma su tiempo')
+//     })
+//     .addAnswer('Aqui lo tienes 😎😎', null, async (_, { flowDynamic }) => {
+//         //   await fakeHTTP()
+//         await flowDynamic('http://paypal.com')
+//     })
+//     .addAnswer('Apurate!')
 
+
+
+
+// const payment_process = async () => {
+//     const response = await fetch('http://127.0.0.1:5000/api/question', {
+//     //  const response = await fetch('https://apigpt3.onrender.com/api/question', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         question: body,
+//         phone_client: '56954641957',
+//         phone_customer: from,
+//       }),
+//     });
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       return data.ai_response;
+//     } else {
+//       return 'Te respondo en un momento, gracias!';
+//     }
+// }
+
+ 
 
 let nombre;
 let cantpasajeros;
 let diahora;
-let origen;
+let tipo_bot;
 let destino;
 
 const flowNewBot = addKeyword(['bot'])
@@ -97,12 +132,13 @@ const flowNewBot = addKeyword(['bot'])
                     buttons: [{ body: '⬅️ Volver al Inicio' }]                      // Y además, añadimos un botón por si necesitas derivarlo a otro flow
 
                 })
+            
             nombre = ctx.body
             return flowDynamic(`Encantado *${nombre}*, continuamos...`)
         }
     )
     .addAnswer(
-        ['¿Cuál es la dirección de origen? Si estás en el aeropuerto, indica puerta 1 o plataforma embarque.'],
+        ['¿Necesitas un bot para uso personal o negocio?'],
         { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
 
         async (ctx, { flowDynamic, endFlow }) => {
@@ -111,8 +147,8 @@ const flowNewBot = addKeyword(['bot'])
                     body: '❌ Su solicitud ha sido cancelada ❌',
                     buttons: [{ body: '⬅️ Volver al Inicio' }]
                 })
-            origen = ctx.body
-            return flowDynamic(`Ok, te pasamos a buscar a *${origen}*...`)
+                tipo_bot = ctx.body
+            return flowDynamic(`Ok, entonces quieres un bot *${tipo_bot}*...`)
         }
     )
     .addAnswer(
@@ -214,7 +250,7 @@ const flowNewBot = addKeyword(['bot'])
 // .addAnswer('Apurate!')
 
 
-const flowPrincipal = addKeyword(['chapa'])
+const flowPrincipal = addKeyword(['chaxbot'])
 // const flowPrincipal = addKeyword(['hola', 'buenos dias', 'buenas tardes', 'buenas noches'])
     .addAnswer(
         [
@@ -225,14 +261,14 @@ const flowPrincipal = addKeyword(['chapa'])
             '👉 *credit*\nPara consultar o comprar créditos',
 
         ],
-        { media: 'https://chatxbot.live/wp-content/uploads/2021/11/human.svg', },
+        { media: 'https://file-examples.com/storage/fe0b804ac5640668798b8d0/2017/11/file_example_MP3_700KB.mp3', },
         null,
         []
     )
-    .addAnswer('Voy a validar tu email...', null, async (_, { flowDynamic }) => {
-        // await queryCredits()
-        return flowDynamic('Email validado correctamten!')
-    })
+    // .addAnswer('Voy a validar tu email...', null, async (_, { flowDynamic }) => {
+    //     // await queryCredits()
+    //     return flowDynamic('Email validado correctamten!')
+    // })
 
 
 // const queryCredits = async () => {
