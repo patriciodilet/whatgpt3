@@ -310,7 +310,7 @@ class ChatGPTClass extends CoreClass {
                 //     console.log("dentro de url regex")
                 //     msgToSend = this.flowClass.find(this.generalArgs.listEvents.VOICE_NOTE) || [];
                 // }
-                console.log("voy x askQuestion")
+                // console.log("voy x askQuestion")
 
                 const aiResponse = await askQuestion(body, from);            
                 // const parseMessage = {answer: aiResponse };
